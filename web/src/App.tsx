@@ -95,15 +95,29 @@ export default function App() {
   async function onSign() {
     if (!wallet || !address || !quote || problem) return;
     const action = mode === "fill" ? 1 : 0;
+    // A quote is valid for 10 minutes; re-quote right before signing so an open tab never signs a stale one.
+    let fresh: Quote;
+    try {
+      setStatus({ kind: "working", text: "Checking the fee…" });
+      fresh = await getQuote(address, t.address, parsed, action);
+    } catch (e: any) {
+      setStatus({ kind: "error", text: e?.message ?? "Couldn't get the fee. Try again." });
+      return;
+    }
+    setQuote(fresh);
+    if (!fresh.allow || fresh.fee > quote.fee || parsed + fresh.fee > balances[token]) {
+      setStatus({ kind: "error", text: "The fee changed. Check the summary and press the button again." });
+      return;
+    }
     const intent: Intent = {
       token: t.address,
       from: address,
       to: recipient as Address,
       amount: parsed,
-      fee: quote.fee,
+      fee: fresh.fee,
       action,
-      minOkbOut: quote.minOkbOut,
-      validBefore: quote.validBefore,
+      minOkbOut: fresh.minOkbOut,
+      validBefore: fresh.validBefore,
       salt: toHex(crypto.getRandomValues(new Uint8Array(32))),
     };
     try {
