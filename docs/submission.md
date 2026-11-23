@@ -61,6 +61,6 @@ More tokens, more chains (BNB Chain first, where the founder hit the problem), a
 API for dApps.
 
 ## Links
-- App: <public URL>
-- Repository: <GitHub URL>
-- Demo video: <video URL>
+- App: https://nogas-pay.vercel.app
+- Repository: https://github.com/rimurut12x-droid/nogas-pay
+- Demo video: https://youtu.be/elFSask67tQ
