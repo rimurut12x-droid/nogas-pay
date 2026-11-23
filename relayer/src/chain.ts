@@ -1,6 +1,7 @@
 import { createPublicClient, createWalletClient, http, type Address, type Hex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { BENSIN, POOL_WOKB_USDG, RELAYER_KEY, RPC_URL, bensinAbi, poolAbi, xlayer } from "./config.js";
+import { normalizeKey } from "./key.js";
+import { BENSIN, POOL_WOKB_USDG, RPC_URL, bensinAbi, poolAbi, xlayer } from "./config.js";
 import type { Intent } from "./intent.js";
 import { computeQuote, type Quote } from "./quote.js";
 
@@ -39,7 +40,7 @@ export async function quote(req: { user: Address; token: Address; amount: bigint
 }
 
 export async function relay(it: Intent, v: number, r: Hex, s: Hex): Promise<Hex> {
-  const account = privateKeyToAccount(RELAYER_KEY);
+  const account = privateKeyToAccount(normalizeKey(process.env.RELAYER_KEY));
   const { request } = await publicClient.simulateContract({
     account,
     address: BENSIN,
