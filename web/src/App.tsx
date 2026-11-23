@@ -236,7 +236,7 @@ export default function App() {
         <h2 id="how-title">How it works</h2>
         <ol>
           <li><strong>Sign</strong><span>Approve one message in your wallet. It can only pay this exact request.</span></li>
-          <li><strong>Satpam checks</strong><span>A TapeOut circuit on X Layer decides if the request is sponsored and its fee.</span></li>
+          <li><strong>Security checks</strong><span>A TapeOut circuit on X Layer decides if the request is sponsored and its fee.</span></li>
           <li><strong>Done</strong><span>NoGas Pay pays the OKB gas and settles everything in one transaction.</span></li>
         </ol>
       </section>
