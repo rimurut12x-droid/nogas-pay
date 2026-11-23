@@ -1,4 +1,4 @@
-import type { Reply } from "../relayer/src/handlers";
+import type { Reply } from "../relayer/src/handlers.js";
 
 type Req = { method?: string; body?: any; headers: Record<string, string | string[] | undefined> };
 type Res = { status: (c: number) => Res; setHeader: (k: string, v: string) => void; send: (b: string) => void };
@@ -13,7 +13,7 @@ export function wrap(handler: (body: any, ip: string) => Promise<Reply>) {
     try {
       const body = typeof req.body === "string" ? JSON.parse(req.body || "{}") : req.body ?? {};
       const r = await handler(body, ip);
-      const { toJson } = await import("../relayer/src/handlers");
+      const { toJson } = await import("../relayer/src/handlers.js");
       return res.status(r.status).send(toJson(r.body));
     } catch (e: any) {
       return res.status(400).send(JSON.stringify({ error: e?.shortMessage ?? e?.message ?? "error" }));

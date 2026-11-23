@@ -1,6 +1,6 @@
 import { createServer, type IncomingMessage, type ServerResponse } from "node:http";
-import { PORT } from "./config";
-import { handleQuote, handleRelay, toJson, type Reply } from "./handlers";
+import { PORT } from "./config.js";
+import { handleQuote, handleRelay, toJson, type Reply } from "./handlers.js";
 
 const send = (res: ServerResponse, r: Reply) => {
   res.writeHead(r.status, {

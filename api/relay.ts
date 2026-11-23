@@ -1,4 +1,4 @@
-import { handleRelay } from "../relayer/src/handlers";
-import { wrap } from "./_wrap";
+import { handleRelay } from "../relayer/src/handlers.js";
+import { wrap } from "./_wrap.js";
 
 export default wrap(handleRelay);

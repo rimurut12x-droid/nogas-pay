@@ -1,8 +1,8 @@
 import { createPublicClient, createWalletClient, http, type Address, type Hex } from "viem";
 import { privateKeyToAccount } from "viem/accounts";
-import { BENSIN, POOL_WOKB_USDG, RELAYER_KEY, RPC_URL, bensinAbi, poolAbi, xlayer } from "./config";
-import type { Intent } from "./intent";
-import { computeQuote, type Quote } from "./quote";
+import { BENSIN, POOL_WOKB_USDG, RELAYER_KEY, RPC_URL, bensinAbi, poolAbi, xlayer } from "./config.js";
+import type { Intent } from "./intent.js";
+import { computeQuote, type Quote } from "./quote.js";
 
 export const publicClient = createPublicClient({ chain: xlayer, transport: http(RPC_URL) });
 

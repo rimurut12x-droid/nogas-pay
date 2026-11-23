@@ -1,5 +1,5 @@
 import { getAddress, isAddress, isHex, type Hex } from "viem";
-import type { Intent } from "./intent";
+import type { Intent } from "./intent.js";
 
 export class RateLimiter {
   private hits = new Map<string, number[]>();
@@ -36,14 +36,14 @@ export type Reply = { status: number; body: unknown };
 
 /** Transport-independent handlers used by the Node server and the Vercel functions. */
 export async function handleQuote(b: any, ip: string): Promise<Reply> {
-  const { quote } = await import("./chain");
+  const { quote } = await import("./chain.js");
   if (!isAddress(b?.user) || !isAddress(b?.token)) return { status: 400, body: { error: "bad address" } };
   if (limiter.hit(`ip:${ip}`)) return { status: 429, body: { error: "rate limited" } };
   return { status: 200, body: await quote({ user: b.user, token: b.token, amount: BigInt(b.amount), action: Number(b.action) }) };
 }
 
 export async function handleRelay(b: any, ip: string): Promise<Reply> {
-  const { relay } = await import("./chain");
+  const { relay } = await import("./chain.js");
   const it = parseIntent(b?.intent);
   if (limiter.hit(`ip:${ip}`) || limiter.hit(`from:${it.from}`)) return { status: 429, body: { error: "rate limited" } };
   const txHash = await relay(it, Number(b.v), b.r as Hex, b.s as Hex);
