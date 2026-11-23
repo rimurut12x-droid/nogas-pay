@@ -1,0 +1,10 @@
+.env
+out/
+cache/
+node_modules/
+dist/
+.superpowers/
+__pycache__/
+broadcast/
+*.local
+internal/

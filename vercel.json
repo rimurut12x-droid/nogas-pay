@@ -1,0 +1,6 @@
+{
+  "installCommand": "npm --prefix relayer ci && npm --prefix web ci",
+  "buildCommand": "npm --prefix web run build",
+  "outputDirectory": "web/dist",
+  "functions": { "api/*.ts": { "maxDuration": 30 } }
+}
