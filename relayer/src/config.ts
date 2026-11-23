@@ -8,7 +8,7 @@ export const xlayer = defineChain({
   rpcUrls: { default: { http: [RPC_URL] } },
 });
 
-export const BENSIN = (process.env.BENSIN_ADDRESS ?? "") as Address;
+export const BENSIN = (process.env.NOGAS_CONTRACT ?? process.env.BENSIN_ADDRESS ?? "") as Address;
 export const RELAYER_KEY = (process.env.RELAYER_KEY ?? "") as Hex;
 export const PORT = Number(process.env.PORT ?? 8787);
 export const POOL_WOKB_USDG: Address = "0x5d7E3Ad08B0C52e460787677B0632Cd024Df437C";

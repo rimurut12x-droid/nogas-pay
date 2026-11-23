@@ -52,7 +52,7 @@ serverless functions (`api/quote.ts`, `api/relay.ts`). Set these environment var
 | Variable | Value |
 |---|---|
 | `RELAYER_KEY` | the relayer's private key (from your local `.env`; keep it secret) |
-| `BENSIN_ADDRESS` | `0x067FC6bb277777D9AA81AF392F8F81163999aDEE` |
+| `NOGAS_CONTRACT` | `0x067FC6bb277777D9AA81AF392F8F81163999aDEE` |
 | `RPC_URL` | `https://rpc.xlayer.tech` |
 
 The web build reads `web/.env.production` (relayer at `/api`, mainnet addresses).
