@@ -47,7 +47,7 @@ exchanges, P2P traders and people paid in stablecoins hit it most.
 ## Revenue model and why users pay
 - A fee per sponsored transaction ($0.02 normal, $0.10 for large sends). Gas on X Layer costs a fraction
   of a cent, so almost all of the fee is margin.
-- A small spread on fill ups.
+- Fill ups pay the same per-request fee; the swapped OKB goes to the user in full.
 - The first small send is free to bring users in.
 - Users pay because the alternative (buying OKB elsewhere and withdrawing or bridging) costs more and
   takes minutes; they come back because every stablecoin wallet runs out of gas again.
