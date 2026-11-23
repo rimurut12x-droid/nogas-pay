@@ -1,16 +1,16 @@
 :root {
-  --bg: #06131f;
-  --bg-2: #0a1d2e;
+  --bg: #0b1f3a;
+  --bg-2: #12305a;
   --surface: rgba(255, 255, 255, 0.045);
   --surface-2: rgba(255, 255, 255, 0.07);
   --border: rgba(255, 255, 255, 0.09);
   --border-strong: rgba(255, 255, 255, 0.18);
-  --text: #e8eef3;
-  --muted: #8fa3b3;
-  --signal: #f5c518;
-  --signal-ink: #1b1600;
-  --petrol: #1e6fa8;
-  --empty: #ff5468;
+  --text: #f8fafc;
+  --muted: #a9bcd6;
+  --signal: #ff6f61;
+  --signal-ink: #0b1f3a;
+  --petrol: #2f80ed;
+  --empty: #b3313a;
   --ok: #3ddc97;
   --radius-lg: 1.5rem;
   --radius: 0.9rem;
@@ -30,8 +30,8 @@ body {
   margin: 0;
   min-height: 100vh;
   background:
-    radial-gradient(60rem 36rem at 75% -10%, rgba(30, 111, 168, 0.35), transparent 60%),
-    radial-gradient(40rem 30rem at 0% 20%, rgba(245, 197, 24, 0.06), transparent 60%),
+    radial-gradient(60rem 36rem at 75% -10%, rgba(47, 128, 237, 0.35), transparent 60%),
+    radial-gradient(40rem 30rem at 0% 20%, rgba(255, 111, 97, 0.06), transparent 60%),
     var(--bg);
 }
 
@@ -159,7 +159,7 @@ a {
   position: relative;
   padding: 2rem 1.75rem 1.75rem;
   border-radius: var(--radius-lg);
-  background: linear-gradient(160deg, rgba(30, 111, 168, 0.28), rgba(10, 29, 46, 0.6) 55%);
+  background: linear-gradient(160deg, rgba(47, 128, 237, 0.28), rgba(18, 48, 90, 0.6) 55%);
   border: 1px solid var(--border-strong);
   text-align: center;
   box-shadow: 0 30px 80px -30px rgba(0, 0, 0, 0.6), inset 0 1px 0 rgba(255, 255, 255, 0.06);
@@ -208,7 +208,7 @@ a {
   stroke: var(--signal);
   stroke-width: 4;
   stroke-linecap: round;
-  filter: drop-shadow(0 0 6px rgba(245, 197, 24, 0.55));
+  filter: drop-shadow(0 0 6px rgba(255, 111, 97, 0.55));
 }
 
 .gauge__hub {
@@ -230,7 +230,7 @@ a {
 }
 
 .gauge--empty figcaption {
-  color: var(--empty);
+  color: #ff8a80;
 }
 
 /* ---- panel ---- */
@@ -326,7 +326,7 @@ a {
 
 .token--on {
   border-color: var(--signal);
-  background: rgba(245, 197, 24, 0.07);
+  background: rgba(255, 111, 97, 0.07);
 }
 
 .token:has(input:focus-visible) {
@@ -460,7 +460,7 @@ a {
 .btn--primary {
   background: var(--signal);
   color: var(--signal-ink);
-  box-shadow: 0 10px 30px -10px rgba(245, 197, 24, 0.6);
+  box-shadow: 0 10px 30px -10px rgba(255, 111, 97, 0.6);
 }
 
 .btn--primary:not(:disabled):hover {
@@ -492,7 +492,7 @@ a {
 }
 
 .status--error {
-  color: var(--empty);
+  color: #ff8a80;
 }
 
 .status--done {
@@ -562,7 +562,7 @@ a {
   margin-bottom: 2.5rem;
   border-radius: var(--radius-lg);
   border: 1px solid var(--border);
-  background: linear-gradient(135deg, rgba(30, 111, 168, 0.18), transparent 70%);
+  background: linear-gradient(135deg, rgba(47, 128, 237, 0.18), transparent 70%);
 }
 
 .rules p {
