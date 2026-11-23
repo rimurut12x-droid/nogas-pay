@@ -128,141 +128,186 @@ export default function App() {
 
   return (
     <div className="app">
+      <div className="bg" aria-hidden="true">
+        <div className="bg__grid" />
+        <div className="bg__glow bg__glow--a" />
+        <div className="bg__glow bg__glow--b" />
+      </div>
+
       <nav className="nav">
-        <div className="brand">
+        <a className="brand" href="#top">
           <svg viewBox="0 0 32 32" className="brand__mark" aria-hidden="true">
             <path d="M5 23a11 11 0 1 1 22 0" />
             <path d="M16 23 9.5 13.5" className="brand__needle" />
           </svg>
           <span>NoGas Pay</span>
+        </a>
+        <div className="nav__links">
+          <a href="#how">How it works</a>
+          <a href="#rules">Fees</a>
+          <a href="https://github.com/rimurut12x-droid/nogas-pay" target="_blank" rel="noreferrer">GitHub</a>
         </div>
         <div className="nav__right">
-          <span className="pill"><span className="pill__dot" />X Layer</span>
-          {address && <span className="pill pill--wallet">{address.slice(0, 6)}…{address.slice(-4)}</span>}
+          {address ? (
+            <span className="pill pill--wallet"><span className="pill__dot" />{address.slice(0, 6)}…{address.slice(-4)}</span>
+          ) : (
+            <button className="btn btn--primary btn--sm" onClick={onConnect}>Connect wallet</button>
+          )}
         </div>
       </nav>
 
-      <header className="hero">
-        <div className="hero__copy">
-          <h1>Out of gas? Move your stablecoins anyway.</h1>
+      <main id="top">
+        <header className="hero">
+          <span className="badge"><span className="pill__dot" />Live on X Layer mainnet</span>
+          <h1>Send stablecoins.<br />Skip the gas.</h1>
           <p className="hero__lead">
-            Sign once. NoGas Pay covers the OKB gas on X Layer and takes a small fee from the token you send.
+            Move USDT0, USDC and USDG with zero OKB in your wallet. One signature, and we cover the gas.
           </p>
-          <ul className="hero__points">
-            <li>One signature, no approvals</li>
-            <li>Zero OKB needed</li>
-            <li>Rules frozen on-chain</li>
-          </ul>
-        </div>
-        <div className="tank">
-          <Gauge okb={okb} />
-          {!address && (
-            <button className="btn btn--primary" onClick={onConnect}>Connect wallet</button>
-          )}
-        </div>
-      </header>
+        </header>
 
-      <section className="panel" aria-label="NoGas Pay">
-        <div className="tabs" role="tablist">
-          <button role="tab" aria-selected={mode === "send"} onClick={() => setMode("send")}>Send</button>
-          <button role="tab" aria-selected={mode === "fill"} onClick={() => setMode("fill")}>Fill up</button>
-        </div>
-        <p className="panel__lead">
-          {mode === "send"
-            ? "Send USDT0, USDC or USDG to anyone, even with an empty gas tank."
-            : `Turn up to ${REFUEL_MAX} of a stablecoin into OKB in your own wallet, so you never run dry again.`}
-        </p>
+        <section className="stage">
+          <div className="orb orb--usdt" aria-hidden="true">₮</div>
+          <div className="orb orb--usdc" aria-hidden="true">$</div>
+          <div className="orb orb--okb" aria-hidden="true">OKB</div>
+          <div className="orb orb--usdg" aria-hidden="true">G</div>
 
-        <fieldset className="tokens">
-          <legend>Pay with</legend>
-          {(Object.keys(TOKENS) as TokenKey[]).map((k) => (
-            <label key={k} className={`token${k === token ? " token--on" : ""}`}>
-              <input type="radio" name="token" value={k} checked={k === token} onChange={() => setToken(k)} />
-              <span className="token__name">{k}</span>
-              <span className="token__bal">
-                {address ? Number(formatUnits(balances[k], TOKENS[k].decimals)).toFixed(2) : "–"}
+          <section className="panel" aria-label="NoGas Pay">
+            <div className="panel__head">
+              <div className="tabs" role="tablist">
+                <button role="tab" aria-selected={mode === "send"} onClick={() => setMode("send")}>Send</button>
+                <button role="tab" aria-selected={mode === "fill"} onClick={() => setMode("fill")}>Fill up</button>
+              </div>
+              <div className="tank" title="Your OKB gas tank">
+                <Gauge okb={okb} />
+              </div>
+            </div>
+
+            <fieldset className="tokens">
+              <legend>Pay with</legend>
+              {(Object.keys(TOKENS) as TokenKey[]).map((k) => (
+                <label key={k} className={`token${k === token ? " token--on" : ""}`}>
+                  <input type="radio" name="token" value={k} checked={k === token} onChange={() => setToken(k)} />
+                  <span className={`token__icon token__icon--${k.toLowerCase()}`} aria-hidden="true">
+                    {k === "USDT0" ? "₮" : k === "USDC" ? "$" : "G"}
+                  </span>
+                  <span className="token__text">
+                    <span className="token__name">{k}</span>
+                    <span className="token__bal">
+                      {address ? Number(formatUnits(balances[k], TOKENS[k].decimals)).toFixed(2) : "–"}
+                    </span>
+                  </span>
+                </label>
+              ))}
+            </fieldset>
+
+            <label className="amount">
+              <span className="amount__label">{mode === "send" ? "You send" : "You fill up with"}</span>
+              <span className="amount__row">
+                <input value={amount} onChange={(e) => setAmount(e.target.value.replace(",", "."))} placeholder="0" inputMode="decimal" aria-label="Amount" />
+                <span className="amount__unit">{token}</span>
               </span>
             </label>
-          ))}
-        </fieldset>
 
-        <label className="amount">
-          <span className="amount__label">Amount</span>
-          <span className="amount__row">
-            <input value={amount} onChange={(e) => setAmount(e.target.value.replace(",", "."))} placeholder="0" inputMode="decimal" aria-label="Amount" />
-            <span className="amount__unit">{token}</span>
-          </span>
-        </label>
-
-        {mode === "send" && (
-          <label className="field">
-            <span>Recipient</span>
-            <input value={to} onChange={(e) => setTo(e.target.value)} placeholder="0x…" spellCheck={false} autoComplete="off" />
-          </label>
-        )}
-
-        {showSummary && (
-          <dl className="summary">
-            <div><dt>You send</dt><dd>{fmt(parsed + quote!.fee)} {token}</dd></div>
-            <div>
-              <dt>Fee</dt>
-              <dd>{quote!.tier === 0 ? <span className="free">Free, first send</span> : `${fmt(quote!.fee)} ${token}`}</dd>
-            </div>
-            <div>
-              <dt>{mode === "send" ? "They receive" : "You receive"}</dt>
-              <dd>{mode === "send" ? `${fmt(parsed)} ${token}` : `≥ ${Number(formatUnits(quote!.minOkbOut, 18)).toFixed(5)} OKB`}</dd>
-            </div>
-            <div><dt>Gas paid by you</dt><dd>0 OKB</dd></div>
-          </dl>
-        )}
-
-        {hint && <p className="hint" aria-live="polite">{hint}</p>}
-
-        <button className="btn btn--primary btn--wide" disabled={!!problem || status.kind === "working"} onClick={onSign}>
-          {status.kind === "working" ? status.text : mode === "send" ? "Sign and send" : "Sign and fill up"}
-        </button>
-
-        {(status.kind === "done" || status.kind === "error") && (
-          <p className={`status status--${status.kind}`} role="status">
-            {status.text}{" "}
-            {status.kind === "done" && (
-              <a href={EXPLORER_TX + status.tx} target="_blank" rel="noreferrer">View transaction</a>
+            {mode === "send" && (
+              <label className="field">
+                <span>To</span>
+                <input value={to} onChange={(e) => setTo(e.target.value)} placeholder="Recipient address 0x…" spellCheck={false} autoComplete="off" />
+              </label>
             )}
-          </p>
-        )}
-      </section>
 
-      <section className="how" aria-labelledby="how-title">
-        <h2 id="how-title">How it works</h2>
-        <ol>
-          <li><strong>Sign</strong><span>Approve one message in your wallet. It can only pay this exact request.</span></li>
-          <li><strong>Security checks</strong><span>A TapeOut circuit on X Layer decides if the request is sponsored and its fee.</span></li>
-          <li><strong>Done</strong><span>NoGas Pay pays the OKB gas and settles everything in one transaction.</span></li>
-        </ol>
-      </section>
+            {showSummary && (
+              <dl className="summary">
+                <div><dt>Total from your wallet</dt><dd>{fmt(parsed + quote!.fee)} {token}</dd></div>
+                <div>
+                  <dt>Fee</dt>
+                  <dd>{quote!.tier === 0 ? <span className="free">Free, your first send</span> : `${fmt(quote!.fee)} ${token}`}</dd>
+                </div>
+                <div>
+                  <dt>{mode === "send" ? "They receive" : "You receive"}</dt>
+                  <dd>{mode === "send" ? `${fmt(parsed)} ${token}` : `≥ ${Number(formatUnits(quote!.minOkbOut, 18)).toFixed(5)} OKB`}</dd>
+                </div>
+                <div><dt>Gas you pay</dt><dd>0 OKB</dd></div>
+              </dl>
+            )}
 
-      <section className="rules" aria-labelledby="rules-title">
-        <div>
-          <h2 id="rules-title">Rules frozen on-chain</h2>
-          <p>
-            The security circuit is #1 on processor {" "}
-            <a href="https://www.oklink.com/xlayer/address/0x64De6eA63Eb3AFe65E4026BF03911cb7aAa6e43f" target="_blank" rel="noreferrer">0x64De…e43f</a>.
-            Its 26 NAND gates can't be changed, and the contract checks their hash.
-          </p>
-        </div>
-        <table>
-          <tbody>
-            <tr><th>First send up to $10</th><td>Free</td></tr>
-            <tr><th>Up to $1,000</th><td>$0.02</td></tr>
-            <tr><th>Up to $10,000</th><td>$0.10</td></tr>
-            <tr><th>Fill up</th><td>Up to $10, $0.02</td></tr>
-            <tr><th>Per wallet</th><td>10 a day</td></tr>
-          </tbody>
-        </table>
-      </section>
+            {hint && <p className="hint" aria-live="polite">{hint}</p>}
+
+            {address ? (
+              <button className="btn btn--primary btn--wide" disabled={!!problem || status.kind === "working"} onClick={onSign}>
+                {status.kind === "working" ? status.text : mode === "send" ? "Sign and send" : "Sign and fill up"}
+              </button>
+            ) : (
+              <button className="btn btn--primary btn--wide" onClick={onConnect}>Connect wallet</button>
+            )}
+
+            {(status.kind === "done" || status.kind === "error") && (
+              <p className={`status status--${status.kind}`} role="status">
+                {status.text}{" "}
+                {status.kind === "done" && (
+                  <a href={EXPLORER_TX + status.tx} target="_blank" rel="noreferrer">View transaction</a>
+                )}
+              </p>
+            )}
+          </section>
+        </section>
+
+        <section className="facts" aria-label="At a glance">
+          <div><strong>0 OKB</strong><span>gas needed in your wallet</span></div>
+          <div><strong>$0.02</strong><span>fee for most sends</span></div>
+          <div><strong>1 tx</strong><span>signed once, settled at once</span></div>
+          <div><strong>26 gates</strong><span>of on-chain rules you can verify</span></div>
+        </section>
+
+        <section className="features">
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M4 12h12M12 6l6 6-6 6" /></svg>
+            <h3>Send with an empty tank</h3>
+            <p>Your stablecoins move even when your wallet holds no OKB. The fee comes out of the token you send.</p>
+          </article>
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M6 20V9l6-5 6 5v11M10 20v-6h4v6" /></svg>
+            <h3>Fill up in one tap</h3>
+            <p>Turn a few dollars of stablecoin into OKB in your own wallet, so you never get stuck again.</p>
+          </article>
+          <article>
+            <svg viewBox="0 0 24 24" aria-hidden="true"><path d="M12 3 5 6v6c0 4 3 7.5 7 9 4-1.5 7-5 7-9V6l-7-3Z" /></svg>
+            <h3>Signed for one request</h3>
+            <p>Your signature pays this exact transfer and nothing else. No approvals left behind.</p>
+          </article>
+        </section>
+
+        <section className="how" id="how" aria-labelledby="how-title">
+          <h2 id="how-title">How it works</h2>
+          <ol>
+            <li><strong>Sign</strong><span>Approve one message in your wallet. It can only pay this exact request.</span></li>
+            <li><strong>Security checks</strong><span>A TapeOut circuit on X Layer decides if the request is sponsored and its fee.</span></li>
+            <li><strong>Done</strong><span>NoGas Pay pays the OKB gas and settles everything in one transaction.</span></li>
+          </ol>
+        </section>
+
+        <section className="rules" id="rules" aria-labelledby="rules-title">
+          <div>
+            <h2 id="rules-title">Fees and limits, frozen on‑chain</h2>
+            <p>
+              The security circuit is #1 on processor{" "}
+              <a href="https://www.oklink.com/xlayer/address/0x64De6eA63Eb3AFe65E4026BF03911cb7aAa6e43f" target="_blank" rel="noreferrer">0x64De…e43f</a>.
+              Its 26 NAND gates can't be changed, and the contract checks their hash.
+            </p>
+          </div>
+          <table>
+            <tbody>
+              <tr><th>First send up to $10</th><td>Free</td></tr>
+              <tr><th>Up to $1,000</th><td>$0.02</td></tr>
+              <tr><th>Up to $10,000</th><td>$0.10</td></tr>
+              <tr><th>Fill up</th><td>Up to $10, $0.02</td></tr>
+              <tr><th>Per wallet</th><td>10 a day</td></tr>
+            </tbody>
+          </table>
+        </section>
+      </main>
 
       <footer className="foot">
-        <span>NoGas Pay on X Layer</span>
+        <span>NoGas Pay, built on X Layer with TapeOut</span>
         <a href="https://github.com/rimurut12x-droid/nogas-pay" target="_blank" rel="noreferrer">Source on GitHub</a>
       </footer>
     </div>

@@ -5,7 +5,7 @@ export function Gauge({ okb }: { okb: number | null }) {
   const level = okb === null ? 0 : Math.min(okb / FULL_OKB, 1);
   const angle = -90 + level * 180;
   const empty = okb !== null && okb === 0;
-  const label = okb === null ? "Connect a wallet to read your tank" : empty ? "Empty tank" : `${okb.toFixed(5)} OKB`;
+  const label = okb === null ? "Your gas tank" : empty ? "Empty tank" : `${okb.toFixed(5)} OKB`;
   const ticks = Array.from({ length: 9 }, (_, i) => -90 + i * 22.5);
 
   return (
