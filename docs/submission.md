@@ -22,7 +22,7 @@ exchanges, P2P traders and people paid in stablecoins hit it most.
 - Works with any EVM wallet (OKX Wallet, MetaMask, Rabby). The fee is shown before you sign.
 
 ## How TapeOut is used
-- **Satpam** is a combinational TapeOut circuit (26 NAND gates, 6 inputs, 3 outputs) on our own
+- The **security circuit** is a combinational TapeOut circuit (26 NAND gates, 6 inputs, 3 outputs) on our own
   processor "Bensin" (BNSN, our working name) on X Layer.
   - Processor: `0x64De6eA63Eb3AFe65E4026BF03911cb7aAa6e43f`, circuit id `1`
   - Netlist keccak256: `0x49d19ee729f56bb21d632bfa9a1319c5110e184a10a3d979ee9d8ddec3adab6a`

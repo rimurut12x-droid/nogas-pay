@@ -245,7 +245,7 @@ export default function App() {
         <div>
           <h2 id="rules-title">Rules frozen on-chain</h2>
           <p>
-            Satpam is circuit #1 on processor {" "}
+            The security circuit is #1 on processor {" "}
             <a href="https://www.oklink.com/xlayer/address/0x64De6eA63Eb3AFe65E4026BF03911cb7aAa6e43f" target="_blank" rel="noreferrer">0x64De…e43f</a>.
             Its 26 NAND gates can't be changed, and the contract checks their hash.
           </p>
