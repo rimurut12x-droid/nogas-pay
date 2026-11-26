@@ -1,0 +1,47 @@
+name: CI
+
+on:
+  push:
+    branches: [main]
+  pull_request:
+
+jobs:
+  contracts:
+    name: Foundry tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+        with:
+          submodules: recursive
+      - uses: foundry-rs/foundry-toolchain@v1
+      - name: forge test (fork tests skipped; they need X Layer RPC)
+        working-directory: contracts
+        run: forge test -vv --no-match-contract BensinFork
+
+  circuit:
+    name: Circuit truth-table tests
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+      - run: python3 -m unittest circuit/test_satpam.py
+
+  node:
+    name: Relayer and web tests
+    runs-on: ubuntu-latest
+    strategy:
+      matrix:
+        package: [relayer, web]
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+          cache-dependency-path: ${{ matrix.package }}/package-lock.json
+      - working-directory: ${{ matrix.package }}
+        run: npm ci
+      - working-directory: ${{ matrix.package }}
+        run: npm test
