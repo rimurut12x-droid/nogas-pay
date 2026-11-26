@@ -1,5 +1,7 @@
 # NoGas Pay — send stablecoins with an empty gas tank
 
+[![CI](https://github.com/rimurut12x-droid/nogas-pay/actions/workflows/ci.yml/badge.svg)](https://github.com/rimurut12x-droid/nogas-pay/actions/workflows/ci.yml) [![License: MIT](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE) [![Live on X Layer](https://img.shields.io/badge/live-X%20Layer%20mainnet-black)](https://nogas-pay.vercel.app)
+
 NoGas Pay lets a wallet with **0 OKB** send USDT0, USDC or USDG on X Layer, or turn a few dollars of
 stablecoin into OKB ("fill up"), with a single signature. NoGas Pay covers the gas and takes a small fee
 from the token being sent. Every request is checked by a **security circuit** on TapeOut whose rules are
